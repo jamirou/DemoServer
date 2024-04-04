@@ -52,6 +52,12 @@ fun Application.module() {
                 call.respond(message = "${e.message}", status = HttpStatusCode.BadRequest)
             }
         }
+        get("/redirect") {
+            call.respondRedirect(url = "/redirected", permanent = false)
+        }
+        get("/redirected") {
+            call.respondText("You have been redirected to /redirected")
+        }
     }
 }
 @Serializable
