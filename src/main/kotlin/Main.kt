@@ -1,11 +1,23 @@
 package com.example
 
+import io.ktor.application.*
+import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import kotlinx.serialization.Serializable
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main() {
+    embeddedServer(Netty, port = 8080) {
+        install(ContentNegotiation) {
+            json()
+        }
+        module()
+    }.start(wait = true)
+}
 
 @Suppress("unused")
 fun Application.module() {
@@ -32,8 +44,19 @@ fun Application.module() {
             val age = call.request.queryParameters["age"]
             call.respondText("Hello $name, You are $age years old")
         }
+        get("/person") {
+            try {
+                val person = Person(name = "Jam", age = 30)
+                call.respond(message = person, status = HttpStatusCode.OK)
+            } catch (e: Exception) {
+                call.respond(message = "${e.message}", status = HttpStatusCode.BadRequest)
+            }
+        }
     }
 }
+@Serializable
+data class Person(val name: String, val age: Int)
+
 
 
 
