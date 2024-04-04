@@ -27,6 +27,11 @@ fun Application.module() {
             }
             call.respondText("Hello again $username, And your header: $header ")
         }
+        get("/user") {
+            val name = call.request.queryParameters["name"]
+            val age = call.request.queryParameters["age"]
+            call.respondText("Hello $name, You are $age years old")
+        }
     }
 }
 
