@@ -6,10 +6,20 @@ import io.ktor.server.routing.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@Suppress("unused")
 fun Application.module() {
     routing {
         get("/") {
             call.respondText ("Hello, World!")
+        }
+    }
+}
+
+@Suppress("unused")
+fun Application.module2() {
+    routing {
+        get("/book") {
+            call.respondText ("Hello, Android!")
         }
     }
 }
