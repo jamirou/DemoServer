@@ -10,11 +10,9 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import kotlinx.html.body
-import kotlinx.html.h3
-import kotlinx.html.head
-import kotlinx.html.title
+import kotlinx.html.*
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
 
 fun main() {
     embeddedServer(Netty, port = 8080) {
@@ -79,6 +77,8 @@ fun Application.module() {
                     } else {
                         h3 { +"Welcome, $name!" }
                     }
+                    p { +"This is the body of the page, Your current time is: ${LocalDateTime.now()}" }
+                    p { +"Your current directory is: ${System.getProperty("user.dir")}" }
                 }
 
             }
