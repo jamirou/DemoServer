@@ -10,6 +10,8 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import kotlinx.html.body
+import kotlinx.html.h3
 import kotlinx.html.head
 import kotlinx.html.title
 import kotlinx.serialization.Serializable
@@ -66,14 +68,24 @@ fun Application.module() {
             call.respondText("You have been redirected to /redirected")
         }
         get("/welcome") {
+            val name = call.request.queryParameters["name"]
             call.respondHtml {
                 head {
-                    title {+"Custom title"}
+                    title { +"This is the title of the page" }
                 }
+                body {
+                    if (name.isNullOrEmpty()) {
+                        h3 { +"Welcome my friend" }
+                    } else {
+                        h3 { +"Welcome, $name!" }
+                    }
+                }
+
             }
         }
     }
 }
+
 @Serializable
 data class Person(val name: String, val age: Int)
 
