@@ -66,23 +66,52 @@ fun Application.module() {
             call.respondText("You have been redirected to /redirected")
         }
         get("/welcome") {
-            val name = call.request.queryParameters["name"]
+            var name = call.request.queryParameters["name"]
+
             call.respondHtml {
                 head {
-                    title { +"This is the title of the page" }
+                    title { +"Welcome Page" }
                 }
                 body {
-                    if (name.isNullOrEmpty()) {
-                        h3 { +"Welcome my friend" }
-                    } else {
-                        h3 { +"Welcome, $name!" }
+                    div {
+                        style = "text-align: center;"
+                        h3 {
+                            if (name.isNullOrEmpty()) {
+                                +"Welcome my friend"
+                            } else {
+                                +"Welcome, $name!"
+                            }
+                        }
+                        p { +"This is the body of the page." }
+                        p { +"Your current time is: ${LocalDateTime.now()}" }
+                        p { +"Your current directory is: ${System.getProperty("user.dir")}" }
+                        img(src = "R.png") {
+                            style = "display: block; margin: auto; max-width: 100%; height: auto;"
+                        }
+                        if (name.isNullOrEmpty()) {
+                            form(action = "/welcome", method = FormMethod.get) {
+                                style = "margin-top: 20px;"
+                                label {
+                                    htmlFor = "nameInput"
+                                    +"Enter your name: "
+                                }
+                                input {
+                                    id = "nameInput"
+                                    name = "name"
+                                    type = InputType.text
+                                    required = true
+                                }
+                                button(type = ButtonType.submit) {
+                                    style = "margin-left: 10px;"
+                                    +"Submit"
+                                }
+                            }
+                        }
                     }
-                    p { +"This is the body of the page, Your current time is: ${LocalDateTime.now()}" }
-                    p { +"Your current directory is: ${System.getProperty("user.dir")}" }
                 }
-
             }
         }
+
     }
 }
 
