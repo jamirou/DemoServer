@@ -3,6 +3,7 @@ package com.example
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
@@ -22,6 +23,9 @@ fun main() {
 @Suppress("unused")
 fun Application.module() {
     install(Routing) {
+        static {
+            resources("static")
+        }
         get("/") {
             call.respondText("Hello, World!")
         }
