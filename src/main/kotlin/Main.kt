@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
 fun main() {
-    embeddedServer(Netty, port = 8080) {
+    embeddedServer(Netty, port = 8080, watchPaths = listOf("classes", "resources")) {
         install(ContentNegotiation) {
             json()
         }
@@ -68,6 +68,10 @@ fun Application.module() {
         get("/welcome") {
             var name = call.request.queryParameters["name"]
 
+            if (call.request.queryParameters.contains("name")) {
+                name = call.request.queryParameters["name"]
+            }
+
             call.respondHtml {
                 head {
                     title { +"Welcome Page" }
@@ -79,7 +83,7 @@ fun Application.module() {
                             if (name.isNullOrEmpty()) {
                                 +"Welcome my friend"
                             } else {
-                                +"Welcome, $name!"
+                                +"Hello, $name!"
                             }
                         }
                         p { +"This is the body of the page." }
@@ -111,6 +115,7 @@ fun Application.module() {
                 }
             }
         }
+
 
     }
 }
